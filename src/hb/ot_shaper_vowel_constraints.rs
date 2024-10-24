@@ -365,14 +365,13 @@ pub fn preprocess_text_vowel_constraints(buffer: &mut hb_buffer_t) {
             while buffer.idx + 1 < buffer.len {
                 #[allow(unused_mut)]
                 let mut matched = false;
-                match buffer.cur(0).glyph_id {
-                    0x112B0 => match buffer.cur(1).glyph_id {
+                if buffer.cur(0).glyph_id == 0x112B0 { 
+                    match buffer.cur(1).glyph_id {
                         0x112E0 | 0x112E5 | 0x112E6 | 0x112E7 | 0x112E8 => {
                             matched = true;
                         }
                         _ => {}
-                    },
-                    _ => {}
+                    } 
                 }
                 buffer.next_glyph();
                 if matched {
