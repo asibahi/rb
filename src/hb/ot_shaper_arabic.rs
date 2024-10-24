@@ -328,12 +328,16 @@ fn arabic_joining(buffer: &mut hb_buffer_t) {
             }
         }
         // States that have a possible prev_action.
-        else if let Some(prev) = prev {
-            if this_type >= hb_arabic_joining_type_t::R || (2..=5).contains(&state) {
-                buffer.unsafe_to_concat(Some(prev), Some(i + 1));
+        else {
+            if let Some(prev) = prev {
+                if this_type >= hb_arabic_joining_type_t::R || (2..=5).contains(&state) {
+                    buffer.unsafe_to_concat(Some(prev), Some(i + 1));
+                }
+            } else {
+                if this_type >= hb_arabic_joining_type_t::R {
+                    buffer.unsafe_to_concat_from_outbuffer(Some(0), Some(i + 1));
+                }
             }
-        } else if this_type >= hb_arabic_joining_type_t::R {
-            buffer.unsafe_to_concat_from_outbuffer(Some(0), Some(i + 1));
         }
 
         buffer.info[i].set_arabic_shaping_action(entry.1);
