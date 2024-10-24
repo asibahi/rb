@@ -171,7 +171,7 @@ impl TryNumFrom<f32> for i32 {
         // We can't represent `MAX` exactly, but it will round up to exactly
         // `MAX+1` (a power of two) when we cast it.
         const MAX_P1: f32 = i32::MAX as f32;
-        if v >= MIN && v < MAX_P1 {
+        if (MIN..MAX_P1).contains(&v) {
             Some(v as i32)
         } else {
             None

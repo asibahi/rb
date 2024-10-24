@@ -785,13 +785,11 @@ pub fn compose(a: char, b: char) -> Option<char> {
 fn compose_hangul(a: char, b: char) -> Option<char> {
     let l = u32::from(a);
     let v = u32::from(b);
-    if L_BASE <= l && l < (L_BASE + L_COUNT) && V_BASE <= v && v < (V_BASE + V_COUNT) {
+    if (L_BASE..(L_BASE + L_COUNT)).contains(&l) && (V_BASE..(V_BASE + V_COUNT)).contains(&v) {
         let r = S_BASE + (l - L_BASE) * N_COUNT + (v - V_BASE) * T_COUNT;
         Some(char::try_from(r).unwrap())
-    } else if S_BASE <= l
-        && l <= (S_BASE + S_COUNT - T_COUNT)
-        && T_BASE <= v
-        && v < (T_BASE + T_COUNT)
+    } else if (S_BASE..=(S_BASE + S_COUNT - T_COUNT)).contains(&l)
+        && (T_BASE..(T_BASE + T_COUNT)).contains(&v)
         && (l - S_BASE) % T_COUNT == 0
     {
         let r = l + (v - T_BASE);
